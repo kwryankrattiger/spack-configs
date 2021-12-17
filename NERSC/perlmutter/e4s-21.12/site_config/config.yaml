@@ -1,0 +1,7 @@
+config:
+  install_tree: 
+    root: $HOME/perlmutter-workspace/software
+  source_cache: $HOME/.spack/perlmutter/cache
+  module_roots:
+    tcl: $HOME/perlmutter-workspace/modules/tcl
+    lmod: $HOME/perlmutter-workspace/modules/lmod
