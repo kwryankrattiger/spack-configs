@@ -1,7 +1,6 @@
 config:
   install_tree: 
-    root: $HOME/spack-workspace/software
+    root: $HOME/spack-workspace/perlmutter/software
   source_cache: $HOME/.spack/cache
-  module_roots:
-    tcl: $HOME/spack-workspace/modules/tcl
-    lmod: $HOME/spack-workspace/modules/lmod
+  build_stage:
+  - $HOME/tmp/perlmutter/spack/build-stage

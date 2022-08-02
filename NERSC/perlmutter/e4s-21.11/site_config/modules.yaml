@@ -1,0 +1,16 @@
+modules:
+  default:
+    roots:
+      tcl: /global/u1/r/rkratt/spack-workspace/perlmutter/modules/tcl
+      lmod: /global/u1/r/rkratt/spack-workspace/perlmutter/modules/lmod
+    enable:
+    - lmod
+    tcl:
+      all:
+        autoload: none
+    lmod:
+      all:
+        autoload: direct
+      hierarchy: [mpi]
+      core_compilers:
+      - gcc@7.5.0

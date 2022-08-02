@@ -2,12 +2,12 @@ packages:
   all:
     compiler:
     - gcc@7.5.0
-      # - gcc@9.3.0
-    - nvhpc@21.9
+    - gcc@10.3.0
+    - gcc@11.2.0
+    - nvhpc@21.11
     providers:
       blas: [cray-libsci]
       mpi: [cray-mpich]
-    variants: cuda_arch=86
   amrex:
     variants: +fortran +hypre +openmp +petsc +shared
   bzip2:
@@ -24,24 +24,29 @@ packages:
   cray-mpich:
     buildable: false
     externals:
-    - spec: cray-mpich@8.1.12 %gcc@9.3.0
-      prefix: /opt/cray/pe/mpich/8.1.12/ofi/gnu/9.1
+    - spec: cray-mpich@8.1.17 %gcc
+      prefix: /opt/cray/pe/mpich/8.1.17/ofi/gnu/9.1
       modules:
-      - cray-mpich/8.1.12
-      - cudatoolkit/21.9_11.4
-    - spec: cray-mpich@8.1.12 %nvhpc@21.9
-      prefix: /opt/cray/pe/mpich/8.1.12/ofi/nvidia/20.7
+      - cray-mpich/8.1.17
+      - cudatoolkit/11.5
+    - spec: cray-mpich@8.1.15 %gcc
+      prefix: /opt/cray/pe/mpich/8.1.15/ofi/gnu/9.1
       modules:
-      - cray-mpich/8.1.12
+      - cray-mpich/8.1.15
+      - cudatoolkit/11.5
+    - spec: cray-mpich@8.1.15 %nvhpc
+      prefix: /opt/cray/pe/mpich/8.1.15/ofi/nvidia/20.7
+      modules:
+      - cray-mpich/8.1.15
       - cudatoolkit/21.9_11.4
   cuda:
     buildable: false
-    version: [11.4.0]
+    version: [11.5.0]
     externals:
-    - spec: cuda@11.4.0
-      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.9/cuda/11.4
+    - spec: cuda@11.5.0
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.11/cuda/11.5
       modules:
-      - cudatoolkit/21.9_11.4
+      - cudatoolkit/11.5
 
   patchelf:
     buildable: false
@@ -64,15 +69,6 @@ packages:
     version: [1.12.1]
   hypre:
     variants: +openmp +superlu-dist
-  gcc:
-    buildable: false
-    externals:
-    - spec: gcc@9.3.0 %gcc@7.5.0
-      modules:
-      - PrgEnv-gnu
-      - gcc/9.3.0
-      - craype-x86-milan
-      - libfabric
   git:
     version: [2.26.2]
     buildable: false
@@ -89,8 +85,8 @@ packages:
     buildable: false
     variants: fabrics=sockets,tcp,udp,rxm
     externals:
-    - spec: libfabric@1.11.0.4.75
-      prefix: /opt/cray/libfabric/1.11.0.4.75
+    - spec: libfabric@1.11.0.4.116
+      prefix: /opt/cray/libfabric/1.11.0.4.116
       modules:
       - libfabric/1.11.0.4.75
   libunwind:
@@ -98,7 +94,7 @@ packages:
   mercury:
     variants: ~bmi
   mesa:
-    variants: ~llvm
+    variants: ~osmesa+glx
   mesa18:
     variants: ~llvm
   m4:
@@ -116,17 +112,17 @@ packages:
   nvhpc:
     buildable: false
     externals:
-    - spec: nvhpc@21.9 %gcc@7.5.0
+    - spec: nvhpc@21.11 %gcc@7.5.0
       modules:
       - PrgEnv-nvidia
-      - nvidia/21.9
+      - nvidia/21.11
       - craype-x86-milan
       - libfabric
   openssl:
     version: [1.1.0i]
     buildable: false
     externals:
-    - spec: openssl@1.1.0i
+    - spec: openssl@1.1.0
       prefix: /usr
   openssh:
     version: [7.9p1]
@@ -192,3 +188,43 @@ packages:
     externals:
     - spec: zsh@5.6
       prefix: /usr
+  python:
+    buildable: false
+    version: [3.9.7.1]
+    externals:
+    - spec: python@3.9.7.1
+      modules: [cray-python/3.9.7.1]
+      prefix: /opt/cray/pe/python/3.9.7.1
+  py-mpi4py:
+    buildable: false
+    version: [3.1.3]
+    externals:
+    - spec: py-mpi4py@3.1.3
+      modules:
+      - cray-mpich/8.1.15
+      - cray-python/3.9.7.1
+  py-numpy:
+    buildable: false
+    version: [1.20.3]
+    externals:
+    - spec: py-numpy@1.20.3
+      modules:
+      - cray-python/3.9.7.1
+  # Turn off blt_find_mpi for cray system
+  vtk-h:
+    variants: +blt_find_mpi
+  apcomp:
+    variants: +blt_find_mpi # Needs to find MPI because it won't build MPI at all without it.
+  ascent:
+    variants: +blt_find_mpi
+  conduit:
+    variants: +blt_find_mpi
+  dray:
+    variants: +blt_find_mpi # Need to find MPI because MFEM requires it
+#   py-pip:
+#     buildable: false
+#     version: [21.2.3]
+#     externals:
+#     - spec: py-pip@21.2.3
+#       modules:
+#       - cray-python/3.9.7.1
